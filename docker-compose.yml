@@ -1,0 +1,48 @@
+# Pinning the project name keeps container, network and volume names stable
+# (movie-ticket-booking-postgres, movie-ticket-booking_postgres_data, ...) regardless
+# of what the checkout directory happens to be called. Without it Compose derives the
+# project name from the directory, so a rename silently orphans the existing volume.
+name: movie-ticket-booking
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: movie-ticket-booking-postgres
+    environment:
+      POSTGRES_DB: movie_ticket_booking
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d movie_ticket_booking" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    image: movie-ticket-booking:local
+    container_name: movie-ticket-booking-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/movie_ticket_booking
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      BOOKING_HOLD_DURATION: ${BOOKING_HOLD_DURATION:-5m}
+      NOTIFICATION_REMINDER_ENABLED: ${NOTIFICATION_REMINDER_ENABLED:-true}
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -q -O - http://localhost:8080/actuator/health | grep -q UP" ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+volumes:
+  postgres_data:
