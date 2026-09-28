@@ -42,3 +42,6 @@ Thumbs.db
 ### Logs and local overrides ###
 *.log
 application-local.properties
+
+### Local working notes, kept out of the published repository ###
+docs/ai/raw-prompts/
