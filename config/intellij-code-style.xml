@@ -1,0 +1,69 @@
+<!--
+  IntelliJ IDEA code style for this project.
+
+  Import via Settings -> Editor -> Code Style -> gear icon -> Import Scheme ->
+  IntelliJ IDEA code style XML, then select this file.
+
+  Based on the TartanBackendService scheme supplied with the assignment, with two
+  deliberate adjustments:
+
+    * RIGHT_MARGIN raised to 120. The original left it at the IDE default of 100,
+      which forces awkward wrapping on this codebase's fully-qualified generic
+      types and long JPA @Column declarations.
+    * KEEP_BLANK_LINES_BEFORE_RBRACE lowered from 1 to 0, so methods do not end
+      with a stray blank line.
+
+  .editorconfig at the project root carries the subset that every editor honours,
+  so contributors not using IntelliJ still get consistent indentation and line
+  endings.
+-->
+<code_scheme name="MovieTicketBooking" version="173">
+    <option name="RIGHT_MARGIN" value="120"/>
+
+    <JavaCodeStyleSettings>
+        <!-- Never collapse imports into a wildcard at realistic class counts. -->
+        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="20"/>
+        <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="10"/>
+    </JavaCodeStyleSettings>
+
+    <codeStyleSettings language="JAVA">
+        <option name="RIGHT_MARGIN" value="120"/>
+
+        <option name="KEEP_LINE_BREAKS" value="false"/>
+        <option name="KEEP_FIRST_COLUMN_COMMENT" value="false"/>
+        <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false"/>
+        <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1"/>
+        <option name="KEEP_BLANK_LINES_IN_CODE" value="1"/>
+        <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0"/>
+
+        <option name="INDENT_CASE_FROM_SWITCH" value="false"/>
+
+        <option name="ALIGN_MULTILINE_PARAMETERS" value="false"/>
+        <option name="ALIGN_MULTILINE_RESOURCES" value="false"/>
+
+        <option name="SPACE_WITHIN_ARRAY_INITIALIZER_BRACES" value="true"/>
+        <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true"/>
+
+        <option name="CALL_PARAMETERS_WRAP" value="1"/>
+        <option name="METHOD_PARAMETERS_WRAP" value="1"/>
+        <option name="RESOURCE_LIST_WRAP" value="5"/>
+        <option name="EXTENDS_LIST_WRAP" value="1"/>
+        <option name="THROWS_LIST_WRAP" value="1"/>
+        <option name="EXTENDS_KEYWORD_WRAP" value="1"/>
+        <option name="THROWS_KEYWORD_WRAP" value="1"/>
+        <option name="METHOD_CALL_CHAIN_WRAP" value="2"/>
+        <option name="BINARY_OPERATION_WRAP" value="1"/>
+        <option name="BINARY_OPERATION_SIGN_ON_NEXT_LINE" value="true"/>
+        <option name="TERNARY_OPERATION_WRAP" value="5"/>
+        <option name="ARRAY_INITIALIZER_WRAP" value="1"/>
+        <option name="ENUM_CONSTANTS_WRAP" value="2"/>
+
+        <indentOptions>
+            <option name="INDENT_SIZE" value="4"/>
+            <option name="CONTINUATION_INDENT_SIZE" value="8"/>
+            <option name="TAB_SIZE" value="4"/>
+            <option name="USE_TAB_CHARACTER" value="false"/>
+            <option name="SMART_TABS" value="true"/>
+        </indentOptions>
+    </codeStyleSettings>
+</code_scheme>
