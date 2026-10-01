@@ -18,9 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Decides what a cancellation is worth.
  * <p>
- * <b>Nothing about the ladder is hard-coded.</b> The brief's example - 100%
- * beyond 24 hours, 50% between 12 and 24, nothing under 12 - exists purely as
- * rows in {@code refund_policy_rules}, editable through the admin API. This
+ * <b>Nothing about the ladder is hard-coded.</b> The default - 100% beyond
+ * 24 hours, 50% between 12 and 24, nothing under 12 - exists purely as rows in
+ * {@code refund_policy_rules}, editable through the admin API. This
  * class resolves which policy applies and delegates the arithmetic to
  * {@link RefundCalculator}.
  * <p>

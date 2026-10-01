@@ -7,11 +7,10 @@ import org.springframework.stereotype.Component;
 /**
  * The mock transport: it logs instead of sending.
  * <p>
- * The brief explicitly allows a mock notification service, and there is no
- * value in wiring a real SMTP or SMS provider into a take-home. What matters -
- * and what is real here - is everything around it: the notification is
- * persisted transactionally, dispatched after commit on a bounded executor,
- * and deduplicated by key.
+ * The transport is a stub; everything around it is real. Notifications are
+ * persisted transactionally, dispatched after commit on a bounded executor and
+ * deduplicated by key, so swapping in SMTP or SMS means implementing
+ * {@link NotificationSender} and nothing else.
  * <p>
  * Swapping in a real transport means providing another
  * {@link NotificationSender} bean marked {@code @Primary}, or deleting this

@@ -211,8 +211,8 @@ VALUES
 -- ---------------------------------------------------------------------------
 -- Refund policies
 --
--- "Standard" is the brief's example ladder, expressed as data. "Andheri
--- Flexible" shows a venue overriding it with its own, more generous terms.
+-- "Standard" is the platform default. "Andheri Flexible" shows a venue
+-- overriding it with its own, more generous terms.
 -- ---------------------------------------------------------------------------
 INSERT INTO refund_policies (id, name, description, theater_id, is_default, active, created_at, updated_at)
 VALUES ('01930000-0005-7000-8000-000000000001', 'Standard',

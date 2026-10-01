@@ -59,9 +59,8 @@ CREATE INDEX ix_cities_active ON cities (active);
 -- ---------------------------------------------------------------------------
 -- movies
 --
--- Not named explicitly in the brief's minimum table list, but a show is a
--- screening *of something*; modelling it avoids denormalising the title onto
--- every show row. See README "Assumptions".
+-- A show is a screening *of something*; modelling it as its own table avoids
+-- de-normalising the title onto every show row.
 -- ---------------------------------------------------------------------------
 CREATE TABLE movies
 (

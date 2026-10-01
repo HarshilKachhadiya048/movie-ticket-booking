@@ -1,7 +1,7 @@
 package com.harshil.movieticketbooking.user.domain;
 
 /**
- * The two roles the brief calls for.
+ * The two roles in the system.
  * <p>
  * Stored as the bare name ({@code ADMIN}) and exposed to Spring Security with
  * the {@code ROLE_} prefix it expects, so {@code hasRole('ADMIN')} and

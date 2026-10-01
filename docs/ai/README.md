@@ -1,7 +1,7 @@
 # AI-assisted development record
 
-The assignment asks for documentation of how AI assistance was used. This directory is that record, kept
-in the repository so the process is auditable rather than asserted.
+A record of how AI assistance was used while building this, kept in the repository so the process is
+auditable rather than asserted.
 
 ## What is here
 

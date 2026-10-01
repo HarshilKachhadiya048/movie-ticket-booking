@@ -250,7 +250,7 @@ class BookingApiIT extends AbstractIntegrationTest {
                     .andExpect(jsonPath("$.holdExpiresAt").exists());
         }
 
-        /** The brief's explicit requirement: seat contention is a 409. */
+        /** Seat contention is a 409. */
         @Test
         void aContestedSeatReturns409NamingTheSeats() throws Exception {
             TestScenario scenario = testData.createBookableShow();

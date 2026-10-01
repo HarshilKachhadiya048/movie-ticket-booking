@@ -15,9 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Sends each confirmed booking one reminder before its show.
  * <p>
- * <b>Idempotent three times over</b>, which is what the brief asks for and
- * what a scheduler that may run late, twice, or on two instances at once
- * actually requires:
+ * <b>Idempotent three times over</b>, which is what a scheduler that may run
+ * late, twice, or on two instances at once requires:
  * <ol>
  *     <li>the claim query only selects bookings with
  *     {@code reminder_sent_at IS NULL}, and marks them in the same

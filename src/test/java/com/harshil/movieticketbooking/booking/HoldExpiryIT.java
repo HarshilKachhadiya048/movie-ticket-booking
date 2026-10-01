@@ -28,8 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * Hold expiration, and specifically the brief's requirement that the scheduler
- * must not be the only thing that makes an expired seat bookable.
+ * Hold expiration, and specifically that the scheduler is not what makes an
+ * expired seat bookable.
  * <p>
  * The scheduler is disabled entirely in the test profile, so every test in the
  * first group runs with <em>no</em> sweeper at all. Anything that passes here

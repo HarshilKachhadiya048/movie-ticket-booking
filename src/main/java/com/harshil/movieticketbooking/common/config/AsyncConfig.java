@@ -20,8 +20,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
  * <p>
  * <b>Why neither stock rejection policy is right.</b> {@code CallerRunsPolicy}
  * would run delivery on the caller's thread - which, for an after-commit
- * listener, is the HTTP request thread. That is precisely the thing the brief
- * forbids. {@code AbortPolicy} throws {@code TaskRejectedException}, and
+ * listener, is the HTTP request thread - exactly what this executor exists to
+ * avoid. {@code AbortPolicy} throws {@code TaskRejectedException}, and
  * because the throw happens while submitting from inside an after-commit
  * callback, it would surface to the client as a 500 on a booking that
  * <em>actually succeeded and was committed</em>. So the handler logs and

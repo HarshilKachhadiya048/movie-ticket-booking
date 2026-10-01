@@ -132,7 +132,7 @@ the explicit `algorithm` is required.
 
 **Decision.** Do not build the outbox now. Shape the design so one can be added without a rewrite.
 
-**Why.** The brief makes it optional, and the durability gap it closes is narrow: a crash between commit
+**Why.** The durability gap it closes is narrow: a crash between commit
 and dispatch. At this scale that does not justify the extra table and poller. But the decision should not
 be expensive to reverse.
 

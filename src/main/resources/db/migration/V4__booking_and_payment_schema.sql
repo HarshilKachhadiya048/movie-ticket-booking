@@ -69,7 +69,7 @@ CREATE INDEX ix_bookings_reminder_pending ON bookings (show_id)
 -- ---------------------------------------------------------------------------
 -- booking_seats
 --
--- Carries the price snapshot required by the brief: the seat label, category,
+-- Carries the price snapshot: the seat label, category,
 -- resolved day type and the exact price charged. Later edits to pricing_rules
 -- can never retroactively change what a customer was charged.
 -- ---------------------------------------------------------------------------

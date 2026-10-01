@@ -265,7 +265,7 @@ public class TestDataFactory {
                 .build();
     }
 
-    /** The brief's example ladder: 0% under 12h, 50% to 24h, 100% beyond. */
+    /** Default ladder: 0% under 12h, 50% to 24h, 100% beyond. */
     private RefundPolicy createDefaultRefundPolicy() {
         return refundPolicyRepository.findActiveDefault().orElseGet(() -> {
             RefundPolicy policy = RefundPolicy.builder()

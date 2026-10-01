@@ -24,9 +24,8 @@ import lombok.NoArgsConstructor;
  * either overlapping or leaving a gap, so a cancellation at exactly 24 hours
  * has precisely one answer.
  * <p>
- * The brief's example ladder becomes three rows -
- * {@code [0,12) = 0%}, {@code [12,24) = 50%}, {@code [24,∞) = 100%} - and is
- * seed data, not code.
+ * The default ladder is three rows - {@code [0,12) = 0%},
+ * {@code [12,24) = 50%}, {@code [24,∞) = 100%} - and is seed data, not code.
  */
 @Entity
 @Getter

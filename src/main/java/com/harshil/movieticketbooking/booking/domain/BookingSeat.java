@@ -25,11 +25,9 @@ import lombok.NoArgsConstructor;
  * One seat within a booking, together with the price snapshot for it.
  * <p>
  * The row label, number, category, resolved day type and exact price charged
- * are all copied here at hold time rather than read back through the seat and
- * pricing tables. That is what the brief means by protecting historical
- * bookings from future pricing changes: an admin can re-price a screen or
- * re-categorise a seat tomorrow and last week's ticket still shows, and can
- * still justify, what was actually charged.
+ * are copied here at hold time rather than read back through the seat and
+ * pricing tables, so re-pricing a screen tomorrow cannot change what last
+ * week's ticket was charged.
  */
 @Entity
 @Getter

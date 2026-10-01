@@ -4,8 +4,7 @@
   Import via Settings -> Editor -> Code Style -> gear icon -> Import Scheme ->
   IntelliJ IDEA code style XML, then select this file.
 
-  Based on the TartanBackendService scheme supplied with the assignment, with two
-  deliberate adjustments:
+  A standard backend-service scheme with two deliberate adjustments:
 
     * RIGHT_MARGIN raised to 120. The original left it at the IDE default of 100,
       which forces awkward wrapping on this codebase's fully-qualified generic

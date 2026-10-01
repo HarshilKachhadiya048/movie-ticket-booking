@@ -23,9 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
  * Tidies up holds that lapsed without payment.
  *
  * <h2>This is a cleanup, not a correctness mechanism</h2>
- * The brief is explicit that the scheduler must not be the only thing that
- * makes an expired seat bookable, and here it is not the thing that makes it
- * bookable <em>at all</em>. A lapsed hold is already treated as available by
+ * The scheduler is not what makes an expired seat bookable - it plays no part
+ * in that <em>at all</em>. A lapsed hold is already treated as available by
  * {@code ShowSeat.effectiveStatus}, evaluated under the row lock inside the
  * hold transaction. If this sweeper runs late, is switched off, or has never
  * run in this deployment, seats are still allocated correctly - a customer

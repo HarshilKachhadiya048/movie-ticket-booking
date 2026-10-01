@@ -1,8 +1,8 @@
 -- ===========================================================================
 -- V5 - Configurable refund policies and issued refunds.
 --
--- The brief's example ladder (>24h = 100%, 12-24h = 50%, <12h = 0%) is seed
--- data, not code. A policy is a named set of non-overlapping hour bands; the
+-- The default ladder (>24h = 100%, 12-24h = 50%, <12h = 0%) is seed data, not
+-- code. A policy is a named set of non-overlapping hour bands; the
 -- refund percentage for a cancellation is whichever band contains the hours
 -- remaining until the show starts.
 -- ===========================================================================

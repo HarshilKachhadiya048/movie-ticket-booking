@@ -17,10 +17,10 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * Authentication and URL-level authorization.
  * <p>
- * <b>HTTP Basic over BCrypt.</b> The brief rules out OAuth, JWT, SSO and MFA,
- * so the goal here is a minimal mechanism that still demonstrates real
- * role-based access control. Basic needs no token lifecycle, which keeps the
- * sample {@code curl} commands in the README short.
+ * <b>HTTP Basic over BCrypt.</b> A minimal mechanism with real role-based
+ * access control and no token lifecycle, which keeps the sample {@code curl}
+ * commands short. OAuth or JWT is the upgrade path if this ever faces a
+ * browser client.
  * <p>
  * <b>Stateless, CSRF disabled.</b> There is no browser session and no cookie,
  * so there is nothing for a cross-site request to ride on; every request

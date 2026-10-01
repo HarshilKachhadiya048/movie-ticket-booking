@@ -14,10 +14,8 @@ import lombok.NoArgsConstructor;
 /**
  * A film that can be scheduled as a show.
  * <p>
- * The brief's minimum table list does not name movies, but a show is a
- * screening <em>of</em> something and the customer-facing listing has to say
- * what. Modelling it as its own entity avoids copying title, language and
- * runtime onto every show row. See README "Assumptions".
+ * Modelled as its own entity rather than denormalised onto every show row: a
+ * show is a screening <em>of</em> something and the listing has to say what.
  * <p>
  * {@code releaseDate} is a {@link LocalDate}, not an instant: a release date
  * is a calendar fact with no time-of-day and no zone.

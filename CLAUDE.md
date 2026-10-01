@@ -53,6 +53,6 @@ each earn their place. Adding one "for extensibility" is a change that needs jus
 
 ## Scope boundaries
 
-Deliberately out of scope, per the assignment: frontend, deployment, CI/CD, microservices, OAuth/JWT/SSO,
+Deliberately out of scope for now: frontend, deployment, CI/CD, microservices, OAuth/JWT/SSO,
 production observability. `Dockerfile` and `docker-compose.yml` exist only so the project runs locally in
 one command.

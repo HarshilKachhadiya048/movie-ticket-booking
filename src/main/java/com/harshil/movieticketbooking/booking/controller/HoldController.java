@@ -26,9 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
  * {@link SeatHoldService}, where it can be tested without HTTP.
  * <p>
  * A successful hold returns <b>201</b> with the booking and its payable total.
- * Contention returns <b>409</b>, which is the status the brief asks for and
- * the one that tells a client "your request was fine, somebody else got there
- * first, try different seats".
+ * Contention returns <b>409</b>: the request was valid, somebody else got
+ * there first.
  */
 @RestController
 @RequiredArgsConstructor

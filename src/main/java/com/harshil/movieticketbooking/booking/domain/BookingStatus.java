@@ -16,10 +16,10 @@ import java.util.Set;
  * <p>
  * Notes on the design:
  * <ul>
- *     <li><b>EXPIRED is distinct from CANCELLED.</b> The brief lists CANCELLED;
- *     splitting out the hold that simply lapsed keeps "the customer changed
- *     their mind" separate from "the customer never paid", which matters for
- *     reporting and means a cancellation always implies a deliberate act.</li>
+ *     <li><b>EXPIRED is distinct from CANCELLED.</b> Splitting out the hold
+ *     that simply lapsed keeps "the customer changed their mind" separate from
+ *     "the customer never paid", so a cancellation always implies a deliberate
+ *     act.</li>
  *     <li><b>PAYMENT_FAILED is terminal.</b> A declined payment releases the
  *     seats, so there is nothing left to retry against - the seats may already
  *     belong to somebody else. Retrying means taking a fresh hold, which is

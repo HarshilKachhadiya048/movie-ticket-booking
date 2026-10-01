@@ -40,9 +40,9 @@ import org.springframework.transaction.annotation.Transactional;
  * them and no lock held across it. Spring's {@code @Transactional} works
  * through a proxy, so a method calling another method on {@code this} bypasses
  * it entirely - putting the orchestration and the transactional steps in one
- * class would silently produce one long transaction spanning the gateway call,
- * which is exactly the failure mode the brief warns about. Splitting the beans
- * makes the boundary real and impossible to lose by accident.
+ * class would silently produce one long transaction spanning the gateway call.
+ * Splitting the beans makes the boundary real and impossible to lose by
+ * accident.
  * <p>
  * <b>Why business failures are returned rather than thrown.</b> "The payment
  * was declined, the seats are released, the booking is terminal" is a state

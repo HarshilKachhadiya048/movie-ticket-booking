@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Create or replace a refund policy and its bands.
  * <p>
- * The brief's example ladder is expressed here as data:
+ * A ladder is expressed as data:
  * <pre>
  *   { "minHoursBeforeShow": 0,  "maxHoursBeforeShow": 12,   "refundPercentage": 0 }
  *   { "minHoursBeforeShow": 12, "maxHoursBeforeShow": 24,   "refundPercentage": 50 }

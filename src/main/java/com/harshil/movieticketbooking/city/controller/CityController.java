@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Browsing cities and the theaters in them.
  * <p>
- * Authenticated rather than public. The brief lists browsing as a customer
- * capability, so it sits behind credentials; admins can browse too, which is
- * why the check is {@code isAuthenticated()} and not
+ * Authenticated rather than public. Admins browse too, which is why the
+ * check is {@code isAuthenticated()} and not
  * {@code hasRole('CUSTOMER')}. Opening the catalogue to anonymous callers
  * would be a one-line change in {@code SecurityConfig}.
  */

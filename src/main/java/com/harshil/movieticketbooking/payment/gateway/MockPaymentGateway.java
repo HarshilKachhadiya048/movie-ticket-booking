@@ -9,9 +9,8 @@ import org.springframework.stereotype.Component;
 /**
  * A stand-in for a real payment provider.
  * <p>
- * The brief rules out integrating a real gateway, but the surrounding flow has
- * to behave as though one were there, so this implementation deliberately
- * keeps the properties that make the flow hard:
+ * No real provider is integrated, but the surrounding flow has to behave as
+ * though one were, so this keeps the properties that make it hard:
  * <ul>
  *     <li>it can take time ({@code payment.mock.latency}), which is what makes
  *     "never hold a transaction open across a gateway call" a real constraint

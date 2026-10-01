@@ -9,9 +9,8 @@ import org.springframework.validation.annotation.Validated;
 /**
  * Refund settings bound from {@code refund.*}.
  * <p>
- * Note what is <em>not</em> here: the refund percentages themselves. Those are
- * rows in {@code refund_policy_rules}, editable through the admin API, because
- * the brief requires refund policies to be configurable rather than compiled in.
+ * The percentages themselves are deliberately not here: they are rows in
+ * {@code refund_policy_rules}, editable through the admin API.
  *
  * @param cancellationCutoffBeforeShow how close to the show a customer may
  *                                     still cancel at all. The default of zero

@@ -16,9 +16,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 /**
  * Identity and audit timestamps shared by every persistent entity.
  * <p>
- * <b>Why UUIDv7.</b> The brief calls for UUID identifiers, and a UUID keeps
- * ids non-enumerable and generatable client-side without a database round
- * trip. Plain UUIDv4 pays for that with random insert positions: every new row
+ * <b>Why UUIDv7.</b> A UUID keeps ids non-enumerable and generatable
+ * client-side without a database round trip. Plain UUIDv4 pays for that with
+ * random insert positions: every new row
  * lands on an arbitrary B-tree page, which fragments the index and bloats the
  * WAL. UUIDv7 embeds a millisecond timestamp in its high bits, so generated
  * ids are monotonically increasing and inserts stay at the right-hand edge of

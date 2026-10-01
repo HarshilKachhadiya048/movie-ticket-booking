@@ -16,9 +16,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 /**
  * The refund ladder, exhaustively, with no database and no clock.
  * <p>
- * The policy under test is the brief's example - 100% beyond 24h, 50% between
- * 12h and 24h, nothing inside 12h - but expressed as data, which is the point:
- * these numbers live in {@code refund_policy_rules}, not in the calculator.
+ * The policy under test - 100% beyond 24h, 50% between 12h and 24h, nothing
+ * inside 12h - is expressed as data, which is the point: these numbers live in
+ * {@code refund_policy_rules}, not in the calculator.
  */
 class RefundCalculatorTest {
 

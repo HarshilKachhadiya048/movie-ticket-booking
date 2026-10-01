@@ -69,7 +69,7 @@ validation, centralised error handling, seat-level concurrency control, hold exp
 weekend rates, discount codes, a mock payment gateway, configurable refund policies, asynchronous
 notifications, pre-show reminders, and unit / integration / concurrency tests.
 
-**Out of scope**, per the brief: any frontend, deployment, CI/CD, microservices, distributed-system
+**Out of scope for now**: any frontend, deployment, CI/CD, microservices, distributed-system
 architecture, OAuth / SSO / MFA, and production-grade observability. A `Dockerfile` and
 `docker-compose.yml` are included purely so the project can be run locally in one command — they are not
 a deployment story.
@@ -78,20 +78,20 @@ a deployment story.
 
 ## 3. Assumptions
 
-Every judgement call made where the brief was silent, and why.
+Every judgement call made while scoping the system, and why.
 
 | # | Assumption | Reasoning |
 |---|---|---|
-| 1 | **A `movies` table exists**, although the brief's minimum table list does not name one. | A show is a screening *of something*, and the listing has to say what. The alternative — copying title, language and runtime onto every show row — is strictly worse. |
+| 1 | **A `movies` table exists** as its own entity. | A show is a screening *of something*, and the listing has to say what. The alternative — copying title, language and runtime onto every show row — is strictly worse. |
 | 2 | **Cities carry an IANA time zone.** | "Weekend pricing" is a question about the local calendar, not UTC. A 00:30 Saturday show in Mumbai is 19:00 Friday in UTC; pricing it off UTC would silently undercharge. The seed data includes Dubai specifically so this is observable. |
-| 3 | **Catalogue browsing requires authentication.** | The brief lists browsing under *customer capabilities*. Any authenticated role may browse; only customers may book. Making the catalogue public is one line in `SecurityConfig`. |
+| 3 | **Catalogue browsing requires authentication.** | Browsing is a customer capability. Any authenticated role may browse; only customers may book. Making the catalogue public is one line in `SecurityConfig`. |
 | 4 | **A hold is all-or-nothing.** | Partially fulfilling a four-seat request would leave a customer paying for a fragment of what they asked for. |
-| 5 | **A seat already held by *you* still blocks a new hold**, with a distinct message. | The brief says reject seats "actively HELD by another user". Silently releasing your own earlier hold would invalidate that other booking without telling you. |
+| 5 | **A seat already held by *you* still blocks a new hold**, with a distinct message. | Silently releasing your own earlier hold would invalidate that other booking without telling you. |
 | 6 | **`PAYMENT_FAILED` is terminal.** | A declined payment releases the seats, so there is nothing left to retry against — they may already belong to somebody else. Retrying means taking a fresh hold, which is honest about what actually has to happen. |
 | 7 | **`CANCELLED` and `REFUNDED` are distinct terminal states.** | Both mean cancelled. `REFUNDED` additionally means money went back. The `refunds` row carries the detail. |
-| 8 | **`EXPIRED` is added to the state machine.** | The brief lists `CANCELLED`; splitting out "the hold simply lapsed" keeps *the customer changed their mind* separate from *the customer never paid*. |
+| 8 | **`EXPIRED` is a distinct state.** | Splitting out "the hold simply lapsed" keeps *the customer changed their mind* separate from *the customer never paid*. |
 | 9 | **A discount is applied at hold time**, and its redemption is reserved then. | The customer sees the final payable amount before paying, and cannot have their code taken by somebody else mid-payment. The reservation is released if the booking does not complete. |
-| 10 | **Currency is a single platform-wide setting** (`booking.currency`). | Multi-currency is a genuinely large feature (FX, rounding rules, per-market pricing) and well outside the brief. The Dubai seed city is therefore priced in INR, which is unrealistic but harmless — see [§22](#22-trade-offs-and-known-limitations). |
+| 10 | **Currency is a single platform-wide setting** (`booking.currency`). | Multi-currency is a genuinely large feature (FX, rounding rules, per-market pricing) and out of scope for now. The Dubai seed city is therefore priced in INR, which is unrealistic but harmless — see [§22](#22-trade-offs-and-known-limitations). |
 | 11 | **A seat layout cannot be edited once created.** | Every show on the screen has already materialised inventory from it. Changing it is a data migration, not an API call. |
 | 12 | **A show with confirmed bookings cannot be cancelled by an admin.** | Cancelling would mean issuing refunds for all of them — a deliberate money-moving operation, not a side effect of a status toggle. |
 | 13 | **Ownership failures report 403, not 404.** | Both are defensible. The caller already authenticated and would have to guess a UUIDv7; hiding existence buys nothing the id space does not already provide. |
@@ -310,7 +310,7 @@ Redis is the standard reflex for seat holds, and it is the wrong tool here.
 - **Hold expiry does not need a TTL.** `hold_expires_at` is a column, evaluated under the lock. A Redis
   TTL would expire the hold but leave the booking row stale, so the reconciliation would be needed anyway.
 - **It adds an operational dependency** whose failure mode is "seats cannot be booked" — for a monolith
-  that the brief explicitly says should not be a distributed system.
+  that is deliberately not a distributed system.
 
 Redis would earn its place if seat-map *reads* became a bottleneck, which is a caching problem, not a
 correctness one. See [§23](#23-future-improvements).
@@ -374,8 +374,8 @@ cancellation paths safely retryable.
 
 ## 11. Hold expiry workflow
 
-The brief is explicit that a scheduler must not be the only thing that makes an expired seat bookable.
-Here it is not the thing that makes it bookable **at all**.
+A scheduler must not be the only thing that makes an expired seat bookable. Here it is not what makes
+it bookable **at all**.
 
 ### A. Lazy expiry — the actual mechanism
 
@@ -455,8 +455,8 @@ it perfectly legitimately, and they would arrive at the cinema without a seat.
 `BookingPaymentService` holds **no** `@Transactional` annotation; it delegates to
 `BookingPaymentTransactionService`. Spring's `@Transactional` works through a proxy, so a method calling
 another method on `this` bypasses it entirely. Putting the orchestration and the transactional steps in
-one class would silently produce **one long transaction spanning the gateway call** — exactly the failure
-mode the brief warns about. Splitting the beans makes the boundary real and impossible to lose by accident.
+one class would silently produce **one long transaction spanning the gateway call**. Splitting the beans
+makes the boundary real and impossible to lose by accident.
 
 ### Why failures are returned, not thrown
 
@@ -587,7 +587,7 @@ notification, without a distributed lock.
 **The executor is bounded on purpose**, and its rejection policy is neither stock option:
 
 - `CallerRunsPolicy` would run delivery on the caller's thread — which, for an after-commit listener, is
-  the HTTP request thread. That is exactly what the brief forbids.
+  the HTTP request thread — exactly what this executor exists to avoid.
 - `AbortPolicy` throws `TaskRejectedException` while submitting from inside an after-commit callback,
   which would surface to the client as a **500 on a booking that actually succeeded and was committed**.
 
@@ -618,8 +618,8 @@ Layer three is the actual guarantee; the first two just stop the work being done
 
 ### Extending to a durable outbox
 
-The brief made this optional and it is **not implemented** — but the design is deliberately shaped so it
-is purely additive, with no rewrite and no data migration:
+**Not implemented** — but the design is deliberately shaped so that adding it is purely additive, with
+no rewrite and no data migration:
 
 - `notifications` already carries `status`, `attempt_count` and `available_at`, and already has the
   partial index `ix_notifications_pending ON (available_at) WHERE status = 'PENDING'`;
@@ -659,7 +659,7 @@ users ──< bookings ──< booking_seats ─────────┘
 
 ### Why UUIDv7 primary keys
 
-The brief calls for UUIDs, and they keep ids non-enumerable and generatable without a database round trip.
+UUIDs keep ids non-enumerable and generatable without a database round trip.
 Plain UUIDv4 pays for that with random insert positions: every new row lands on an arbitrary B-tree page,
 fragmenting the index and bloating the WAL.
 
@@ -826,8 +826,7 @@ All under `/api/v1/admin/**`, all requiring `ROLE_ADMIN` (enforced once, in `Sec
              { "minHoursBeforeShow": 24, "maxHoursBeforeShow": null, "refundPercentage": 100 } ] }
 ```
 
-> **Why no Swagger.** The brief says to add it only if it provides real value without unnecessary
-> complexity. For an API this size, a generated page would largely restate this table while adding a
+> **Why no Swagger.** For an API this size, a generated page would largely restate this table while adding a
 > dependency and annotation noise to every controller. This section plus the `curl` walkthrough in
 > [§19](#19-running-the-application) is more useful and stays honest, because it is copied from a real run.
 
@@ -835,9 +834,9 @@ All under `/api/v1/admin/**`, all requiring `ROLE_ADMIN` (enforced once, in `Sec
 
 ## 17. Authentication
 
-**HTTP Basic over BCrypt** (strength 10). The brief rules out OAuth, JWT, SSO and MFA, so the goal is a
-minimal mechanism that still demonstrates real RBAC — and Basic needs no token lifecycle, which keeps the
-sample commands short.
+**HTTP Basic over BCrypt** (strength 10). A minimal mechanism with real RBAC and no token lifecycle,
+which keeps the sample commands short. OAuth or JWT is the upgrade path if this ever faces a browser
+client.
 
 The filter chain is **stateless** with CSRF disabled. There is no session and no cookie, so there is
 nothing for a cross-site request to ride on; every request carries its own credentials. (Disabling CSRF on
@@ -1161,7 +1160,7 @@ The lock was restored and the suite verified green again.
 | Cancellation commits before the gateway refund | A gateway rejection leaves a `FAILED` refund row needing operational follow-up. | A customer who asked to cancel should not stay booked because a third party had an outage. |
 | Gateway transport failure leaves payment `PENDING` | Needs reconciliation; the hold lapses and the seats are released. | The outcome is genuinely unknown. Asserting "not charged" would be a guess that could cost a customer money. |
 | Seat layouts are immutable once created | Changing a layout requires a data migration. | Existing shows have already materialised inventory from it; editing would orphan booked seats. |
-| Single platform-wide currency | The Dubai seed city is priced in INR. | Multi-currency is a large feature well outside the brief. |
+| Single platform-wide currency | The Dubai seed city is priced in INR. | Multi-currency is a large feature, out of scope for now. |
 | One pricing rule per (scope, category, day type), not time-versioned | A price change cannot be scheduled ahead. | Historical bookings are already protected by the price snapshot on `booking_seats`, so versioning would add overlap-resolution rules for no benefit. |
 | Notification rejection logs and discards | A saturated queue delays delivery. | The row is already committed, so nothing recoverable is lost — and the alternatives either block the request thread or 500 a successful booking. |
 
@@ -1175,8 +1174,8 @@ The lock was restored and the suite verified green again.
 - **Admins cannot bulk-cancel a show.** Cancelling a show with confirmed bookings is refused; each booking
   must be cancelled individually so each goes through the refund policy.
 - **No rate limiting.** Out of scope, but a real deployment would want it on `/holds`.
-- **Observability is plain Spring logging**, plus `/actuator/health` for the compose health check. The
-  brief explicitly puts monitoring out of scope.
+- **Observability is plain Spring logging**, plus `/actuator/health` for the compose health check.
+  Metrics and tracing are future work.
 - **No read replicas or caching.** Seat maps hit the primary.
 
 ---
